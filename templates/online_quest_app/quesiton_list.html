@@ -1,8 +1,0 @@
-{% extends 'base.html' %}
-{% block content %}
-<ol>
-{% for question in questions %}
-    <a href="{% url 'quiz-detail' question.pk %}"><li>{{question}}</li></a>
-{% endfor %}
-</ol>
-{% endblock %}

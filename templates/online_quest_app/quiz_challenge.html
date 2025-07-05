@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+{% while challenge %}
+{{question.question}}
+{% if question.type == "0" %}
+<input type="text">
+<input type="submit">
+{% elif question.type == "1" %}
+<button type="button">{{question.answer1}}</button>
+<button type="button">{{question.answer2}}</button>
+<button type="button">{{question.answer3}}</button>
+<button type="button">{{question.answer4}}</button>
+{% endif %}
+{% endblock %}

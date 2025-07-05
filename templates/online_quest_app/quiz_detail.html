@@ -3,5 +3,6 @@
 <p>Назва квізу: {{quiz.name}}</p>
 <p>Опис: {{quiz.description}}</p>
 <p>Автор: {{quiz.user}}</p>
+<a href="{% url 'quiz-challenge' quiz.pk%}"><button>Пройти квіз</button></a>
 <a href="{% url 'quiz-delete' quiz.pk%}"><button>Видалити квіз</button></a>
 {% endblock %}
