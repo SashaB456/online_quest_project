@@ -14,9 +14,11 @@
                 {% csrf_token %}
                 <button type="submit">Logout</button>
             </form>
-            <button>
-                <a href="{% url 'quiz-list' %}">Список квізів</a>
-            </button>
+            {% if request.path != '/quiz_list/' %}
+                <button>
+                    <a href="{% url 'quiz-list' %}">Список квізів</a>
+                </button>
+            {% endif %}
         {% else %}
             Goodbye
             <button>

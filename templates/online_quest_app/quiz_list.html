@@ -1,8 +1,15 @@
 {% extends 'base.html' %}
+
 {% block content %}
-<ol>
-{% for quiz in quizzes %}
-    <a href="{% url 'quiz-detail' quiz.pk %}"><li>{{quiz}}</li></a>
-{% endfor %}
-</ol>
+<ul>
+  {% for quiz in quizzes %}
+  <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+    <li><button><a href="{% url 'quiz-detail' quiz.pk %}">{{ quiz.name }}</a></button></li>
+    </h2>
+    </div>
+    </div>
+  {% endfor %}
+</ul>
 {% endblock %}
