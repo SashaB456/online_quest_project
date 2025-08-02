@@ -1,11 +1,12 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DetailView, DeleteView
-from .models import Quiz, Question
-from .forms import QuizForm
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
+from .models import Quiz, Question, UserProfile
+from .forms import QuizForm, QuestionForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .mixins import UserIsOwnerMixin
+from random import shuffle
 # Create your views here.
 
 class QuizList(ListView):
@@ -15,10 +16,7 @@ class QuizList(ListView):
     def get(self, request):
         super().get(request)
         return render(request, self.template_name, context=self.get_context_data())
-class QuizDetail(DetailView):
-    model = Quiz
-    template_name = 'online_quest_app/quiz_detail.html'
-    context_object_name = 'quiz'
+    paginate_by = 3
 class QuizCreate(LoginRequiredMixin, CreateView):
     model = Quiz
     form_class = QuizForm
@@ -28,6 +26,12 @@ class QuizCreate(LoginRequiredMixin, CreateView):
         user = self.request.user
         form.instance.user = user
         return super().form_valid(form)
+class QuizEdit(LoginRequiredMixin, UpdateView):
+    model = Quiz
+    form_class = QuizForm
+    template_name = 'online_quest_app/quiz_create.html'
+    def get_success_url(self):
+        return reverse('quiz-edit', kwargs={"pk": self.get_object().pk})
 class QuizDelete(LoginRequiredMixin, DeleteView):
     model = Quiz
     template_name = 'online_quest_app/quiz_delete.html'
@@ -44,6 +48,7 @@ def play_quiz(request, quiz_id, question_number=1):
     quiz = Quiz.objects.get(id=quiz_id)
     question_number = request.session.get('question_number', 1)
     questions = list(quiz.question.all())
+    shuffle(questions)
     quiz_size = len(questions)
     current_question = questions[question_number - 1]
     if request.method == "POST":
@@ -61,6 +66,7 @@ def play_quiz(request, quiz_id, question_number=1):
         'quiz': quiz,
         'question': current_question,
         'question_number': question_number,
+        'quiz_size': quiz_size,
         'score': request.session.get('score'),
     })
 def results(request, quiz_id):
@@ -69,3 +75,7 @@ def results(request, quiz_id):
         'quiz': Quiz.objects.get(id=quiz_id),
         'quiz_len': request.session.get('question_number')
     })
+class GetUserProfile(DetailView):
+    model = UserProfile
+    template_name = 'online_quest_app/user_profile.html'
+    context_object_name = 'profile'

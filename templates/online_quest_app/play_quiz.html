@@ -2,17 +2,18 @@
 {% block content %}
 <h1>Квіз: {{quiz.name}}</h1>
 <p>{{ question.question }}</p>
-<p>{{score}}</p>
+<p>Ваш рахунок: {{score}}</p>
+<p>Питання {{question_number}} з {{quiz_size}}</p>
 <form method="post">
     {% csrf_token %}
     {% if question.type == "open" %}
-        <input type="text" name="answer" required>
-        <button type="submit">Відправити</button>
+        <input type="text" name="answer" required><br>
+        <button type="submit" class="btn btn-primary">Відправити</button>
     {% elif question.type == "test" %}
-        <button type="submit" name="answer" value="{{ question.answer1 }}">{{ question.answer1 }}</button>
-        <button type="submit" name="answer" value="{{ question.answer2 }}">{{ question.answer2 }}</button>
-        <button type="submit" name="answer" value="{{ question.answer3 }}">{{ question.answer3 }}</button>
-        <button type="submit" name="answer" value="{{ question.answer4 }}">{{ question.answer4 }}</button>
+        <button type="submit" name="answer" value="{{ question.answer1 }}" class="btn btn-primary">{{ question.answer1 }}</button>
+        <button type="submit" name="answer" value="{{ question.answer2 }}" class="btn btn-success">{{ question.answer2 }}</button><br>
+        <button type="submit" name="answer" value="{{ question.answer3 }}" class="btn btn-danger">{{ question.answer3 }}</button>
+        <button type="submit" name="answer" value="{{ question.answer4 }}" class="btn btn-warning">{{ question.answer4 }}</button>
     {% endif %}
 </form>
 {% endblock %}

@@ -1,15 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<ul>
-  {% for quiz in quizzes %}
-  <div class="accordion" id="accordionExample">
+{% for quiz in quizzes %}
+<div class="accordion" id="accordionExample">
   <div class="accordion-item">
     <h2 class="accordion-header">
-    <li><button><a href="{% url 'quiz-detail' quiz.pk %}">{{ quiz.name }}</a></button></li>
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{quiz.pk}}" aria-expanded="false" aria-controls="{{quiz.pk}}">
+        {{ quiz.name }}
+      </button>
     </h2>
+    <div id="{{quiz.pk}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>{{quiz.description}}</strong><br>
+        <strong>{{quiz.user}}</strong><br>
+        <a href="{% url 'challenge' quiz.pk %}"><button class="btn btn-primary">Починаємо!</button></a>
+        <a href="{% url 'quiz-edit' quiz.pk %}"><button class="btn btn-warning">Змінити квіз!</button></a>
+        <a href="{% url 'quiz-delete' quiz.pk %}"><button class="btn btn-danger">Видалити квіз</button></a>
+      </div>
     </div>
-    </div>
-  {% endfor %}
-</ul>
+  </div>
+</div>{% endfor %}
+<nav aria-label="pagination">
+  <ul class="pagination">
+    <li class="page-item disabled">
+      <span class="page-link">
+        Сторінка {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}
+      </span>
+    </li>
+    {% if page_obj.has_previous %}
+    <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">Назад</a></li>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Далі</a></li>
+    {% endif %}
+  </ul>
+</nav>
+<nav class="nav">
+  <a href="{% url 'quiz-create' %}"><button class="button-success">Створити квіз</button></a>
+</nav>
 {% endblock %}

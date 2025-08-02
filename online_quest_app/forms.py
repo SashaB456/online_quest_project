@@ -5,3 +5,8 @@ class QuizForm(forms.ModelForm):
         model = Quiz
         fields = "__all__"
         exclude = ['user']
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model = Question
+        fields = "__all__"
+        exclude = ['user']
