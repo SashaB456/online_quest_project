@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-<p>{{profile}}</p>
-<p>{{profile.role.name}}</p>
+<p>Ім'я користувача: {{profile}}</p>
+<p>Роль: {{profile.role.name}}</p>
+<p>Опис: {{profile.description}}</p>
+<a href="{% url 'user-profile-update' profile.pk %}"><button>Змінити опис профілю</button></a>
 {% endblock %}

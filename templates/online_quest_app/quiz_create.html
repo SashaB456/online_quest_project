@@ -3,6 +3,6 @@
 <form method="post">
     {% csrf_token %}
     {{form.as_p}}
-    <button type="submit">Створити квіз</button>
+    <button type="submit">{%if request.path == '/quiz_create/'%}Створити квіз{%else%}Створити питання{%endif%}</button>
 </form>
 {% endblock %}

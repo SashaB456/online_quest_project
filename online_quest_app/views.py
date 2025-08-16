@@ -7,8 +7,8 @@ from .forms import QuizForm, QuestionForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .mixins import UserIsOwnerMixin
 from random import shuffle
+from django.contrib.auth.models import User
 # Create your views here.
-
 class QuizList(ListView):
     model = Quiz
     template_name = 'online_quest_app/quiz_list.html'
@@ -22,17 +22,36 @@ class QuizCreate(LoginRequiredMixin, CreateView):
     form_class = QuizForm
     template_name = 'online_quest_app/quiz_create.html'
     success_url = reverse_lazy('quiz-list')
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields["question"].queryset = Question.objects.filter(user=self.request.user)
+        return form
     def form_valid(self, form):
         user = self.request.user
         form.instance.user = user
         return super().form_valid(form)
-class QuizEdit(LoginRequiredMixin, UpdateView):
+class QuestionCreate(LoginRequiredMixin, CreateView):
+    model = Question
+    form_class = QuestionForm
+    template_name = 'online_quest_app/quiz_create.html'
+    success_url = reverse_lazy('quiz-list')
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        if form.instance.type == 'test':
+            if form.instance.correct_answer in [form.instance.answer1, form.instance.answer2, form.instance.answer3, form.instance.answer4]:
+                return super().form_valid(form)
+            else:
+                return HttpResponse(f"The correct answer must be any of the made options.", status=400)
+        elif form.instance.type == 'open':
+            return super().form_valid(form)
+class QuizEdit(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = Quiz
     form_class = QuizForm
     template_name = 'online_quest_app/quiz_create.html'
     def get_success_url(self):
         return reverse('quiz-edit', kwargs={"pk": self.get_object().pk})
-class QuizDelete(LoginRequiredMixin, DeleteView):
+class QuizDelete(LoginRequiredMixin, UserIsOwnerMixin,DeleteView):
     model = Quiz
     template_name = 'online_quest_app/quiz_delete.html'
     success_url = reverse_lazy('quiz-list')
@@ -75,7 +94,14 @@ def results(request, quiz_id):
         'quiz': Quiz.objects.get(id=quiz_id),
         'quiz_len': request.session.get('question_number')
     })
-class GetUserProfile(DetailView):
-    model = UserProfile
+class GetUserProfile(DetailView, LoginRequiredMixin):
+    model = User
     template_name = 'online_quest_app/user_profile.html'
+    context_object_name = 'profile'
+    def get_object(self):
+        user = super().get_object()
+        return user.profile
+class UpdateUserProfile(UpdateView, UserIsOwnerMixin, LoginRequiredMixin):
+    model = UserProfile
+    template_name = 'user_profile_update.html'
     context_object_name = 'profile'
