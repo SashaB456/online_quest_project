@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView
 from .models import Quiz, Question, UserProfile
-from .forms import QuizForm, QuestionForm
+from .forms import QuizForm, QuestionForm, UserProfileForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .mixins import UserIsOwnerMixin
 from random import shuffle
@@ -61,15 +61,26 @@ def Challenge(request, quiz_id):
     request.session['quiz_id'] = quiz.id
     request.session['question_number'] = 1
     request.session['score'] = score
+    #request.session['shuffled'] = True
 
     return redirect('play-quiz', quiz_id=quiz_id, question_number=1)
-def play_quiz(request, quiz_id, question_number=1):
+
+def play_quiz(request:HttpRequest, quiz_id, question_number=1):
     quiz = Quiz.objects.get(id=quiz_id)
     question_number = request.session.get('question_number', 1)
-    questions = list(quiz.question.all())
-    shuffle(questions)
-    quiz_size = len(questions)
-    current_question = questions[question_number - 1]
+    if 'questions_order' not in request.session or request.session.get('quiz_id') != quiz_id:
+        questions = list(quiz.question.values_list('id', flat=True))
+        shuffle(questions)
+        request.session['questions_order'] = questions
+        request.session['score'] = 0
+        request.session['quiz_id'] = quiz.id
+        request.session['question_number'] = 1
+
+    questions_order = request.session.get('questions_order')
+    quiz_size = len(questions_order)
+    current_question_id = questions_order[question_number - 1]
+    current_question = quiz.question.get(id=current_question_id)
+
     if request.method == "POST":
         answer = request.POST.get('answer')
         correct_answer = current_question.correct_answer
@@ -79,6 +90,7 @@ def play_quiz(request, quiz_id, question_number=1):
             request.session['question_number'] = question_number + 1
             return redirect('play-quiz', quiz_id=quiz_id, question_number=request.session['question_number'])
         else:
+            del request.session['questions_order']
             return redirect('results', quiz_id=quiz_id)
     #answers = current_question
     return render(request, 'online_quest_app/play_quiz.html', {
@@ -87,6 +99,7 @@ def play_quiz(request, quiz_id, question_number=1):
         'question_number': question_number,
         'quiz_size': quiz_size,
         'score': request.session.get('score'),
+        'questions_ids': questions_order
     })
 def results(request, quiz_id):
     return render(request, 'online_quest_app/results.html', {
@@ -102,6 +115,17 @@ class GetUserProfile(DetailView, LoginRequiredMixin):
         user = super().get_object()
         return user.profile
 class UpdateUserProfile(UpdateView, UserIsOwnerMixin, LoginRequiredMixin):
-    model = UserProfile
-    template_name = 'user_profile_update.html'
+    model = User
+    form_class = UserProfileForm
+    template_name = 'online_quest_app/user_profile_update.html'
     context_object_name = 'profile'
+    def get_object(self):
+        user = super().get_object()
+        return user.profile
+    def get_success_url(self):
+        return reverse('user-profile', kwargs={"pk": self.get_object().user.id})
+class QuestionList(ListView):
+    model = Question
+    template = 'online_quest_app/question_list.html'
+    context_object_name = 'question'
+    

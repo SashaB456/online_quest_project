@@ -1,6 +1,7 @@
 from django.urls import include, path
 from .views import QuizList, QuizCreate, QuestionCreate, QuizDelete, Challenge, play_quiz, results, QuizEdit, GetUserProfile, UpdateUserProfile
 urlpatterns = [
+    path('', QuizList.as_view()),
     path('quiz_list/', QuizList.as_view(), name='quiz-list'),
     path('quiz_create/', QuizCreate.as_view(), name='quiz-create'),
     path('question_create/', QuestionCreate.as_view(), name='question-create'),

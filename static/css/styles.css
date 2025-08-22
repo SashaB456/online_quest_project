@@ -1,0 +1,24 @@
+body {
+    background-color:rgb(216, 216, 216);
+}
+.quiz-form p {
+    background-color: rgb(223, 223, 223);
+    border: 4px double black;
+    border-radius: 15px;
+    font-size: large;
+    text-align: center;
+    width: fit-content;
+    padding: 8px;
+    margin: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.btn-form{
+    width: fit-content;
+    margin: auto;
+}
+.btn-base {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 8px;
+}

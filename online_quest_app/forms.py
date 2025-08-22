@@ -18,4 +18,4 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = "__all__"
-        exclude = ['user', 'role']
+        exclude = ['user', 'role', 'banned', 'banned_date']

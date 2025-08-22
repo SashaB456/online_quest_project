@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+{{profile}}
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Змінити опис</button>
+</form>
+{% endblock %}

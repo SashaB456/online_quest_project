@@ -12,6 +12,7 @@ class UserProfile(models.Model):
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
     description = models.CharField(max_length=300, blank=True, null=True)
     banned = models.BooleanField(default=False)
+    banned_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username

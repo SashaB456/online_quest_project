@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<form method="post">
+<form method="post" class="quiz-form">
     {% csrf_token %}
     {{form.as_p}}
-    <button type="submit">{%if request.path == '/quiz_create/'%}Створити квіз{%else%}Створити питання{%endif%}</button>
+    <div class="btn-form">
+    <button type="submit" class="btn btn-secondary">{%if request.path == '/quiz_create/'%}Створити квіз{%else%}Створити питання{%endif%}</button>
+    </div>
 </form>
 {% endblock %}
