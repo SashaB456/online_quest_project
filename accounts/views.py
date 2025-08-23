@@ -14,6 +14,6 @@ class Registration(CreateView):
     def form_valid(self, form):
         response = super().form_valid(form)
         login(self.request, self.object)
-        role = Role.objects.get(id=3)
+        role = Role.objects.get(name='Normal')
         UserProfile.objects.create(user=self.object, role=role)
         return redirect('quiz-list')

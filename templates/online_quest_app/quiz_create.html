@@ -4,7 +4,10 @@
     {% csrf_token %}
     {{form.as_p}}
     <div class="btn-form">
-    <button type="submit" class="btn btn-secondary">{%if request.path == '/quiz_create/'%}Створити квіз{%else%}Створити питання{%endif%}</button>
+    <button type="submit" class="btn btn-secondary">{%if request.path == '/quiz_create/'%}Створити квіз
+        {%elif request.path|slice:":10" == '/quiz_edit/'%}Змінити квіз
+        {%elif request.path == '/question_create/'%}Створити питання
+        {%else%}Змінити питання{%endif%}</button>
     </div>
 </form>
 {% endblock %}

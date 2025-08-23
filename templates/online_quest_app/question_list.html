@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+{% if questions %}
+{% for question in questions %}
+<div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{question.pk}}" aria-expanded="false" aria-controls="{{question.pk}}">
+        {{ question.question }}
+      </button>
+    </h2>
+    <div id="{{question.pk}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        <strong>{{question.type}}</strong><br>
+        {%if question.type == 'test' %}
+        <strong>А. {{question.answer1}}</strong><br>
+        <strong>Б. {{question.answer2}}</strong><br>
+        <strong>В. {{question.answer3}}</strong><br>
+        <strong>Г. {{question.answer4}}</strong><br>
+        {% endif %}
+        <strong>Правильна відповідь: {{question.correct_answer}}</strong><br>
+        <a href="{% url 'question-edit' question.pk %}"><button class="btn btn-warning">Змінити питання</button></a>
+        <a href="{% url 'question-delete' question.pk %}"><button class="btn btn-danger">Видалити питання</button></a>
+      </div>
+    </div>
+  </div>
+</div>{% endfor %}
+{% else %}
+<p>Немає питань</p>
+{% endif %}
+{% endblock %}

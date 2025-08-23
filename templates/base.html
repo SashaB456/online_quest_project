@@ -30,6 +30,9 @@
                 <a href="{% url 'user-profile' user.id %}">
                    <button class="btn btn-primary btn-base">Профіль користувача</button>
                 </a>
+                <a href="{% url 'question-list' %}">
+                   <button class="btn btn-primary btn-base">Список ваших питань</button>
+                </a>
                 {% endif %}
         {% else %}
             <a href="{% url 'login' %}">

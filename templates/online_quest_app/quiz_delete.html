@@ -2,10 +2,10 @@
 {% block content %}
 <form method="post">
     {% csrf_token %}
-    <p>Чи ви хочете видалити квіз?</p>
+    <p>{%if request.path == '/quiz_create/'%}Чи ви хочете видалити квіз?{% else %}Чи ви хочете видалити питання?{% endif %}</p>
     <input type="submit" value="Так"></input>
 </form>
-<a href="{% url 'quiz-list' %}">
+{% if request.path == '/quiz_create/%}<a href="{% url 'quiz-list' %}">{% else %}<a href="{% url 'question-list'%}">{% endif %}
     <button type="button">НІ</button>
 </a>
 {% endblock %}

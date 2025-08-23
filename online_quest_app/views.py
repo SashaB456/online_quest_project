@@ -51,10 +51,20 @@ class QuizEdit(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     template_name = 'online_quest_app/quiz_create.html'
     def get_success_url(self):
         return reverse('quiz-edit', kwargs={"pk": self.get_object().pk})
+class QuestionEdit(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
+    model = Question
+    form_class = QuestionForm
+    template_name = 'online_quest_app/quiz_create.html'
+    def get_success_url(self):
+        return reverse('question-edit', kwargs={"pk": self.get_object().pk})
 class QuizDelete(LoginRequiredMixin, UserIsOwnerMixin,DeleteView):
     model = Quiz
     template_name = 'online_quest_app/quiz_delete.html'
     success_url = reverse_lazy('quiz-list')
+class QuestionDelete(LoginRequiredMixin, UserIsOwnerMixin,DeleteView):
+    model = Question
+    template_name = 'online_quest_app/quiz_delete.html'
+    success_url = reverse_lazy('question-list')
 def Challenge(request, quiz_id):
     score = 0
     quiz = Quiz.objects.get(id=quiz_id)
@@ -124,8 +134,8 @@ class UpdateUserProfile(UpdateView, UserIsOwnerMixin, LoginRequiredMixin):
         return user.profile
     def get_success_url(self):
         return reverse('user-profile', kwargs={"pk": self.get_object().user.id})
-class QuestionList(ListView):
-    model = Question
-    template = 'online_quest_app/question_list.html'
-    context_object_name = 'question'
-    
+def QuestionList(request):
+    result = Question.objects.filter(user=request.user)
+    if request.user.profile.role.name == 'Admin' or request.user.profile.role.name == 'Moderator':
+        result = Question.objects.filter(user=request.user)
+    return render(request, context={'questions': result}, template_name='online_quest_app/question_list.html')
