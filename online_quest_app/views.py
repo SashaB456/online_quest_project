@@ -34,7 +34,7 @@ class QuestionCreate(LoginRequiredMixin, CreateView):
     model = Question
     form_class = QuestionForm
     template_name = 'online_quest_app/quiz_create.html'
-    success_url = reverse_lazy('quiz-list')
+    success_url = reverse_lazy('question-list')
     def form_valid(self, form):
         user = self.request.user
         form.instance.user = user
@@ -49,14 +49,12 @@ class QuizEdit(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = Quiz
     form_class = QuizForm
     template_name = 'online_quest_app/quiz_create.html'
-    def get_success_url(self):
-        return reverse('quiz-edit', kwargs={"pk": self.get_object().pk})
+    success_url = reverse_lazy('quiz-list')
 class QuestionEdit(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
     model = Question
     form_class = QuestionForm
     template_name = 'online_quest_app/quiz_create.html'
-    def get_success_url(self):
-        return reverse('question-edit', kwargs={"pk": self.get_object().pk})
+    success_url = reverse_lazy('question-list')
 class QuizDelete(LoginRequiredMixin, UserIsOwnerMixin,DeleteView):
     model = Quiz
     template_name = 'online_quest_app/quiz_delete.html'
