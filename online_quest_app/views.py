@@ -129,7 +129,7 @@ class UpdateUserProfile(UpdateView, UserIsOwnerMixin, LoginRequiredMixin):
     context_object_name = 'profile'
     def get_object(self):
         user = super().get_object()
-        if self.request.user.profile.role.name != 'Admin' or self.request.user.profile.role.name != 'Moderator':
+        if self.request.user.profile.role.name != 'Admin' and self.request.user.profile.role.name != 'Moderator':
             return self.request.user.profile
         else:
             return user.profile

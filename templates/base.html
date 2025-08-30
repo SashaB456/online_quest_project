@@ -15,7 +15,7 @@
         <p>Вас заблоковано, і ваш акаунт зникне через 10 днів</p>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-error btn-base">Logout</button>
+                <button type="submit" class="btn btn-danger btn-base">Logout</button>
             </form>
         {% else %}
             <form method="post" action="{% url 'logout' %}">
@@ -23,30 +23,30 @@
                 <button type="submit" class="btn btn-primary btn-base">Logout</button>
             </form>
                 <a href="{% url 'user-profile' user.id %}">
-                   <button class="btn btn-primary btn-base">Профіль користувача</button>
+                   <button class="btn btn-secondary btn-base">Профіль користувача</button>
                 </a>
                 {% if request.path != '/quiz_list/' or request.path == '' %}
                 <a href="{% url 'quiz-list' %}">
-                   <button class="btn btn-primary btn-base">Список квізів</button>
+                   <button class="btn btn-info btn-base">Список квізів</button>
                 </a>
                 {% endif %}
                 {% if request.path != '/question_list/' %}
                 <a href="{% url 'question-list' %}">
-                   <button class="btn btn-primary btn-base">Список ваших питань</button>
+                   <button class="btn btn-success btn-base">Список ваших питань</button>
                 </a>
                 {%endif%}
                 {% if request.path != '/profile_list/' %}
                                 <a href="{% url 'profile-list' %}">
-                   <button class="btn btn-primary btn-base">Список користувачів</button>
+                   <button class="btn btn-warning btn-base">Список користувачів</button>
                 </a>
                 {% endif %}
                 {%endif%}
         {% else %}
             <a href="{% url 'login' %}">
-                <button class="btn btn-primary btn-base">Зайти</button>
+                <button class="btn btn-dark btn-base">Зайти</button>
             </a>
             <a href="{% url 'register' %}">
-                <button class="btn btn-primary btn-base">Зареєструватися</button>
+                <button class="btn btn-dark btn-base">Зареєструватися</button>
             </a>
         {% endif %}
     </nav>
