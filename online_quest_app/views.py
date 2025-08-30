@@ -129,11 +129,18 @@ class UpdateUserProfile(UpdateView, UserIsOwnerMixin, LoginRequiredMixin):
     context_object_name = 'profile'
     def get_object(self):
         user = super().get_object()
-        return user.profile
+        if self.request.user.profile.role.name != 'Admin' or self.request.user.profile.role.name != 'Moderator':
+            return self.request.user.profile
+        else:
+            return user.profile
     def get_success_url(self):
         return reverse('user-profile', kwargs={"pk": self.get_object().user.id})
 def QuestionList(request):
     result = Question.objects.filter(user=request.user)
     if request.user.profile.role.name == 'Admin' or request.user.profile.role.name == 'Moderator':
-        result = Question.objects.filter(user=request.user)
+        result = Question.objects.all()
     return render(request, context={'questions': result}, template_name='online_quest_app/question_list.html')
+class UserProfileList(ListView):
+    model = UserProfile
+    template_name = 'online_quest_app/profiles.html'
+    context_object_name = 'profiles'

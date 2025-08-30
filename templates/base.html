@@ -22,18 +22,25 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary btn-base">Logout</button>
             </form>
-            {% if request.path != '/quiz_list/' %}
-                <a href="{% url 'quiz-list' %}">
-                   <button class="btn btn-primary btn-base">Список квізів</button>
-                </a>
-            {% endif %}
                 <a href="{% url 'user-profile' user.id %}">
                    <button class="btn btn-primary btn-base">Профіль користувача</button>
                 </a>
+                {% if request.path != '/quiz_list/' or request.path == '' %}
+                <a href="{% url 'quiz-list' %}">
+                   <button class="btn btn-primary btn-base">Список квізів</button>
+                </a>
+                {% endif %}
+                {% if request.path != '/question_list/' %}
                 <a href="{% url 'question-list' %}">
                    <button class="btn btn-primary btn-base">Список ваших питань</button>
                 </a>
+                {%endif%}
+                {% if request.path != '/profile_list/' %}
+                                <a href="{% url 'profile-list' %}">
+                   <button class="btn btn-primary btn-base">Список користувачів</button>
+                </a>
                 {% endif %}
+                {%endif%}
         {% else %}
             <a href="{% url 'login' %}">
                 <button class="btn btn-primary btn-base">Зайти</button>

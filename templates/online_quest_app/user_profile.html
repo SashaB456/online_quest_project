@@ -3,5 +3,9 @@
 <p>Ім'я користувача: {{profile}}</p>
 <p>Роль: {{profile.role.name}}</p>
 <p>Опис: {{profile.description}}</p>
+{% if request.user.profile.role.name != 'Admin' or request.user.profile.role.name != 'Moderator' %}
+<a href="{% url 'user-profile-update' request.user.pk %}"><button>Змінити опис профілю</button></a>
+{%else%}
 <a href="{% url 'user-profile-update' user.pk %}"><button>Змінити опис профілю</button></a>
+{%endif%}
 {% endblock %}

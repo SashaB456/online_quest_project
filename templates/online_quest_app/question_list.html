@@ -25,6 +25,10 @@
     </div>
   </div>
 </div>{% endfor %}
+<nav class="nav">
+  <a href="{% url 'quiz-create' %}"><button class="button-success">Створити квіз</button></a>
+  <a href="{% url 'question-create' %}"><button class="button-success">Створити питання</button></a>
+</nav>
 {% else %}
 <p>Немає питань</p>
 {% endif %}
