@@ -12,7 +12,8 @@
     <nav class="nav">
         {% if user.is_authenticated %}
         {% if user.profile.banned %}
-        <p>Вас заблоковано, і ваш акаунт зникне через 10 днів</p>
+        <p>Вас заблоковано, і ваш акаунт зникне через 10 днів з моменту блокування.<br>
+            Дата: {{request.user.profile.banned_date}}</p>
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger btn-base">Logout</button>
