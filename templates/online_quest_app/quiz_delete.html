@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if not request.user.profile.banned %}
 <form method="post">
     {% csrf_token %}
     <p>{%if request.path == '/quiz_create/' %}Чи ви хочете видалити квіз?{% else %}Чи ви хочете видалити питання?{% endif %}</p>
@@ -8,4 +9,5 @@
 {% if request.path == '/quiz_create/'%}<a href="{% url 'quiz-list' %}">{% else %}<a href="{% url 'question-list'%}">{% endif %}
     <button type="button">НІ</button>
 </a>
+{% endif %}
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if not request.user.profile.banned %}
 <form method="post" class="quiz-form">
     {% csrf_token %}
     {{ form.as_p }}
@@ -17,4 +18,5 @@
         </button>
     </div>
 </form>
+{% endif %}
 {% endblock %}

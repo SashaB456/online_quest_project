@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if not request.user.profile.banned %}
 <p>Ім'я користувача: {{profile}}</p>
 <p>Роль: {{profile.role.name}}</p>
 <p>Опис: {{profile.description}}</p>
@@ -8,4 +9,5 @@
 {%else%}
 <a href="{% url 'user-profile-update' user.pk %}"><button>Змінити опис профілю</button></a>
 {%endif%}
+{% endif %}
 {% endblock %}

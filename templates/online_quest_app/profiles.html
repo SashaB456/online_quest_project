@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if not request.user.profile.banned %}
 {% for profile in profiles %}
 <div class="accordion" id="accordionExample">
   <div class="accordion-item">
@@ -16,4 +17,5 @@
     </div>
   </div>
 </div>{% endfor %}
+{% endif %}
 {% endblock %}

@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
+{% if not request.user.profile.banned %}
 <h1>Квіз: {{quiz.name}}</h1>
 <h1>Ваш результат: {{score}}/{{quiz_len}}</h1>
+{% endif %}
 {% endblock %}

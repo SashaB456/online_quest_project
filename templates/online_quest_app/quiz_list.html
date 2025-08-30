@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if not request.user.profile.banned %}
 {% for quiz in quizzes %}
 <div class="accordion" id="accordionExample">
   <div class="accordion-item">
@@ -39,4 +40,5 @@
   <a href="{% url 'quiz-create' %}"><button class="btn btn-success">Створити квіз</button></a>
   <a href="{% url 'question-create' %}"><button class="btn btn-success">Створити питання</button></a>
 </nav>
+{% endif %}
 {% endblock %}
