@@ -20,12 +20,12 @@
         {% else %}
             <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-base">Logout</button>
+                <button type="submit" class="btn btn-danger btn-base">Logout</button>
             </form>
                 <a href="{% url 'user-profile' user.id %}">
                    <button class="btn btn-secondary btn-base">Профіль користувача</button>
                 </a>
-                {% if request.path != '/quiz_list/' or request.path == '' %}
+                {% if request.path != '/quiz_list/' and request.path != '' %}
                 <a href="{% url 'quiz-list' %}">
                    <button class="btn btn-info btn-base">Список квізів</button>
                 </a>
