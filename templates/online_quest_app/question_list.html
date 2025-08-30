@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% block content %}
-{% if questions %}
 {% for question in questions %}
 <div class="accordion" id="accordionExample">
   <div class="accordion-item">
@@ -26,10 +25,7 @@
   </div>
 </div>{% endfor %}
 <nav class="nav">
-  <a href="{% url 'quiz-create' %}"><button class="button-success">Створити квіз</button></a>
-  <a href="{% url 'question-create' %}"><button class="button-success">Створити питання</button></a>
+  <a href="{% url 'quiz-create' %}"><button class=" btn btn-success">Створити квіз</button></a>
+  <a href="{% url 'question-create' %}"><button class="btn btn-success">Створити питання</button></a>
 </nav>
-{% else %}
-<p>Немає питань</p>
-{% endif %}
 {% endblock %}
